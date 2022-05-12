@@ -29,7 +29,6 @@ def plot_clusters(n_clusters, fitted_model, processed_df):
     fig, ax = plt.subplots(n_clusters,1, figsize =(20,15))
     for clusters in range(n_clusters):
         ax[clusters].plot(processed_df.data,fitted_model.cluster_centers_[clusters])
-    return fig
 
 
 
