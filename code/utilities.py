@@ -59,6 +59,14 @@ def select_optimal_n_clusters(number_clusters, df_for_clustering):
     return optimal_number
 
 
+def fillna_pivot(df):
+  df_pivoted = pd.pivot(data = df, index = 'data', columns = 'settore', values = 'totale')
+  col_names = [col_name for col_name in df_pivoted.columns]
+  index_ = df_pivoted.index
+  df_pivoted = df_pivoted.fillna(0)
+  return df_pivoted
+
+
 
 
 
