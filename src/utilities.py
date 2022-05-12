@@ -1,3 +1,4 @@
+import sklearn
 from sklearn.preprocessing import StandardScaler
 import pandas as pd
 
@@ -32,7 +33,7 @@ def pivot_scale_and_fillna(df):
     returns a pivoted version of the dataframe where the values 
     are scaled and null values substituted with zeros
     """
-    scaler = StandardScaler()
+    scaler = sklearn.preprocessing.StandardScaler()
     df_pivoted = pd.pivot(data = df, index = 'data', columns = 'settore', values = 'totale')
     col_names = [col_name for col_name in df_pivoted.columns]
     index_ = df_pivoted.index
