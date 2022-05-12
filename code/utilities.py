@@ -1,9 +1,10 @@
 import sklearn
+import numpy as np
 from sklearn.preprocessing import StandardScaler
 import pandas as pd
 import matplotlib.pyplot as plt
-
-
+from tslearn.clustering import TimeSeriesKMeans
+import tslearn
 
 def associate_sector_to_category(cluster_predicted, n_clusters, df):
     """
@@ -31,8 +32,6 @@ def plot_clusters(n_clusters, fitted_model, processed_df):
         ax[clusters].plot(processed_df.data,fitted_model.cluster_centers_[clusters])
 
 
-
-
 def pivot_scale_and_fillna(df):
     """
     returns a pivoted version of the dataframe where the values 
@@ -45,6 +44,19 @@ def pivot_scale_and_fillna(df):
     df_pivoted = df_pivoted.fillna(0)
     df_pivoted = pd.DataFrame(scaler.fit_transform(df_pivoted), columns = col_names, index = index_)
     return df_pivoted
+
+def select_optimal_n_clusters(number_clusters, df_for_clustering):
+    """
+    returns the number of clusters that maximizes silhouette score
+    """
+    metric = []
+    for n_clusters in number_clusters:
+        km = TimeSeriesKMeans(n_clusters , metric="euclidean", max_iter=5, max_iter_barycenter=5, random_state=0)
+        cluster_predicted = km.fit_predict(df_for_clustering)
+        metric.append(tslearn.clustering.silhouette_score(df_for_clustering, cluster_predicted, metric="euclidean"))
+    metric = np.array(metric)
+    optimal_number = metric.argmax()
+    return optimal_number
 
 
 
